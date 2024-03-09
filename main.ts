@@ -7,17 +7,17 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function getTokenAccountsBulk(wallets: string[], solanaConnection: Connection, wantNFT: boolean) {
+async function getTokenAccountsBulk(wallets: string[], solanaConnection: Connection, wantNFT: boolean, tokenAddress: string) {
   for (let i = 0; i < wallets.length; i++) {
     console.log("")
     console.log("##################################", wallets[i], "##################################")
     console.log("")
-    await getTokenAccounts(wallets[i], solanaConnection, wantNFT)
+    await getTokenAccounts(wallets[i], solanaConnection, wantNFT, tokenAddress)
     await sleep(1000)
   }
 }
 
-async function getTokenAccounts(wallet: string, solanaConnection: Connection, wantNFT: boolean) {
+async function getTokenAccounts(wallet: string, solanaConnection: Connection, wantNFT: boolean, tokenAddress: string) {
   const filters:GetProgramAccountsFilter[] = [
     {
       dataSize: 165,    //size of account (bytes)
@@ -48,18 +48,23 @@ async function getTokenAccounts(wallet: string, solanaConnection: Connection, wa
       const tokenDecimal:number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["decimals"];
 
       //Log results
-      if (tokenBalance > 0 && ( wantNFT == false && tokenDecimal > 0 || wantNFT == true && tokenDecimal == 0)) {
+      if (tokenAddress == mintAddress) {
+        console.log(`Bozo: ${account.pubkey.toString()}\t${mintAddress}\t${tokenBalance}`)
+        return true;
+      } else if (tokenAddress == '' && tokenBalance > 0 && ( wantNFT == false && tokenDecimal > 0 || wantNFT == true && tokenDecimal == 0)) {
         count = count + 1
         total = total + tokenBalance
         console.log(`${count}: ${account.pubkey.toString()}\t${mintAddress}\t${tokenBalance}`)
       }
   });
 
-  console.log(``);
-  console.log(`Total: ${total}`);
-  console.log(``);
-  console.log(`URL: https://solscan.io/account/${wallet}#portfolio`);
-  console.log(``);
+  if (tokenAddress == '') {
+    console.log(``);
+    console.log(`Total: ${total}`);
+    console.log(``);
+    console.log(`URL: https://solscan.io/account/${wallet}#portfolio`);
+    console.log(``);
+  }
 }
 
 async function getTransactionsBulk(wallets: string[], tokenAddress: string, solanaConnection: Connection, limitTxn2View: number) {
@@ -178,10 +183,10 @@ const getTransactions = async(ownerAddress: string, ataAddress: string, tokenAdd
     console.log(``)
     switch (input) {
       case '1':
-        getTokenAccountsBulk(targetWallets, solanaConnection, false)
+        getTokenAccountsBulk(targetWallets, solanaConnection, false, tokenAddress)
         break;
       case '2':
-        getTokenAccountsBulk(targetWallets, solanaConnection, true)
+        getTokenAccountsBulk(targetWallets, solanaConnection, true, '')
         break;
       case '3':
         getTransactionsBulk(targetWallets, tokenAddress, solanaConnection, parseInt(limitTxn2View, 10))
