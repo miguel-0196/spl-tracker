@@ -72,4 +72,4 @@ In your [Endpoint page](https://dashboard.quicknode.com/endpoints), copy "HTTP P
    ```
 
 # Video
-![Video](https://fanciful-gumdrop-987f83.netlify.app/assets/avi/spltokentracker.mp4)
+[Video](https://fanciful-gumdrop-987f83.netlify.app/assets/avi/spltokentracker.mp4)
