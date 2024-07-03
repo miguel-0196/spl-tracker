@@ -1,4 +1,4 @@
-# Setup
+﻿# Setup
 
 ## RPC Node
 
@@ -70,3 +70,6 @@ In your [Endpoint page](https://dashboard.quicknode.com/endpoints), copy "HTTP P
    ```
    3. Get Tokens Transfer History.
    ```
+
+# Video
+![Video](doc/spltokentracker.mp4)
