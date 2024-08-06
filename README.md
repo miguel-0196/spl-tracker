@@ -70,6 +70,3 @@ In your [Endpoint page](https://dashboard.quicknode.com/endpoints), copy "HTTP P
    ```
    3. Get Tokens Transfer History.
    ```
-
-# Video
-[Video](https://fanciful-gumdrop-987f83.netlify.app/assets/avi/spltokentracker.mp4)
